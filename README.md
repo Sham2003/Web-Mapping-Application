@@ -5,7 +5,7 @@ This project is an interactive mapping application built using Angular, Leaflet,
 
 - **Popup Editing:**
   - Edit map information such as name and description.
-  - Update layer information with ease using intuitive popups.
+  - Update layer information with ease using event listeners.
 
 - **UI Control for Layer Management:**
   - Display and manage groups of markers and shapes using a UI control.
