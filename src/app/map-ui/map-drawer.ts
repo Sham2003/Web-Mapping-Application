@@ -384,29 +384,29 @@ export class DrawMapUI{
 				}
 			})
 		},
-		{
-			name:'rectangle',
-			mode:new TerraDrawRectangleMode({
-				validation:(feature, { updateType }) => {
-					if (updateType === "finish" || updateType === "commit") {
-					    return ValidateMinAreaSquareMeters(feature,0.1);
-					}
-					return true
-				}
-			})
-		},
-		{
-			name:'circle',
-			mode:new TerraDrawCircleMode({
-				startingRadiusKilometers:0.1,
-				validation:(feature, { updateType }) => {
-					if (updateType === "finish" || updateType === "commit") {
-					    return ValidateMinAreaSquareMeters(feature,0.1);
-					}
-					return true
-				}
-			})
-		},
+		// {
+		// 	name:'rectangle',
+		// 	mode:new TerraDrawRectangleMode({
+		// 		validation:(feature, { updateType }) => {
+		// 			if (updateType === "finish" || updateType === "commit") {
+		// 			    return ValidateMinAreaSquareMeters(feature,0.1);
+		// 			}
+		// 			return true
+		// 		}
+		// 	})
+		// },
+		// {
+		// 	name:'circle',
+		// 	mode:new TerraDrawCircleMode({
+		// 		startingRadiusKilometers:0.1,
+		// 		validation:(feature, { updateType }) => {
+		// 			if (updateType === "finish" || updateType === "commit") {
+		// 			    return ValidateMinAreaSquareMeters(feature,0.1);
+		// 			}
+		// 			return true
+		// 		}
+		// 	})
+		// },
 		{
 			name:'polygon',
 			mode:new TerraDrawPolygonMode({
@@ -420,14 +420,14 @@ export class DrawMapUI{
 				}
 			})
 		},
-		{
-			name:'freehand',
-			mode:new TerraDrawFreehandMode({
-				validation: (feature) => {
-				return ValidateNotSelfIntersecting(feature);
-				}
-			})
-		}
+		// {
+		// 	name:'freehand',
+		// 	mode:new TerraDrawFreehandMode({
+		// 		validation: (feature) => {
+		// 		return ValidateNotSelfIntersecting(feature);
+		// 		}
+		// 	})
+		// }
 	]
     }
 }

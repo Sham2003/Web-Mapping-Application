@@ -41,15 +41,17 @@ export namespace DrawControl{
 			L.DomEvent.on(parent,'mousewheel',L.DomEvent.stopPropagation);
 
 			for(const modename of this.drawingmodes){
-				const aLabel = modename != 'select' ? `Add a ${modename}`:'Select a shape';
-				const drawButton = DrawControlUI.createAriaImageButton(className,parent,aLabel,`${modename}.png`);
-				drawButton.name = modename;
-				L.DomEvent.on(drawButton,'click',(event)=>{
-					this._map.fire("set-draw-mode",{dmode:modename});
-					this._update()
-					L.DomEvent.stopPropagation(event);
-				},this);
-				this.buttons.push(drawButton);
+				if(modename != 'polygon'){
+					const aLabel = modename != 'select' ? `Add a ${modename}`:'Select a shape';
+					const drawButton = DrawControlUI.createAriaImageButton(className,parent,aLabel,`${modename}.png`);
+					drawButton.name = modename;
+					L.DomEvent.on(drawButton,'click',(event)=>{
+						this._map.fire("set-draw-mode",{dmode:modename});
+						this._update()
+						L.DomEvent.stopPropagation(event);
+					},this);
+					this.buttons.push(drawButton);
+				}
 			}
 
 		}
