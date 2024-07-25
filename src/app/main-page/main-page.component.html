@@ -1,0 +1,17 @@
+<div id="main-container">
+<h1>My Maps</h1>
+
+<div id="main-page">
+    <div id="map-list">
+        <p *ngIf="!this.getMaps()">No Maps Created</p>
+
+        <div class="map-item" *ngFor="let map of this.getMaps()" (click)="goToMap(map.mapid)">
+            <img class="tile" src="/assets/maptile.png" alt="map">
+            <div><p class="title">{{map.mapname}}</p><button (click)="deleteMap(map.mapid)"><img src="/assets/ui-icons/map-delete.png" width="20px" height="20px"></button></div>
+            <p class="desc">{{map.description}}</p>
+            <p class="created">{{map.created}}</p>
+        </div>
+    </div>
+    <button class="stickybtn" (click)="newMap()" ><p>+</p>New Map</button>
+</div>
+</div>

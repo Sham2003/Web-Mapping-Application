@@ -1,0 +1,78 @@
+/* map control */
+
+
+.leaflet-mapui.leaflet-control{
+    margin: 23px 0px 0px 24px;
+    background-color: white;
+    width: 307px;
+    min-height: 40px;
+    box-shadow:  1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+    border-radius: 2px;
+    border:1px solid rgba(0,0,0,.3);
+}
+
+
+
+.leaflet-mapui-info-div{
+    min-height: 40px;
+    height: 50px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+h3.leaflet-mapui-info-title{
+    font:bolder 1.2em Arial;
+    margin-bottom: 0px;
+    color:#b8b8b8;
+}
+
+p.leaflet-mapui-info-desc{
+    font:400 1.2em Arial;
+    margin-bottom: 0px;
+    color:#b8b8b8;
+}
+
+.leaflet-mapui-control-div{
+    height: 50px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 0;
+    margin: 0;
+    background-color: rgba(84, 81, 81, 0.1);
+}
+
+.leaflet-mapui-control-btn{
+    border: none;
+    position: relative;
+    left: 40px;
+    background-color: none;
+}
+
+.leaflet-mapui-control-btn p{
+    text-decoration: none;
+    font-weight: 100;
+    padding-left: 5px;
+}
+
+.leaflet-mapui-control-btn p:hover{
+    font-weight: bolder;
+    text-decoration: underline;
+    font-weight: bolder;
+}
+
+.leaflet-mapui-control-btn p::before{
+    content:'';
+    background: url('../ui-icons/add.png'); 
+    height: 20px; 
+    width: 20px;  
+    position: absolute; 
+    top: 12px;
+    left: -10px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+
+
+

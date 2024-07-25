@@ -1,0 +1,124 @@
+
+.leaflet-mapui-baselayer-div{
+    border-top: 1px solid black;
+    padding-left: 40px;
+    
+}
+
+.leaflet-mapui-layers-div{
+    max-height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.leaflet-mapui-layers-block{
+    width: 100%;
+    min-height: 10px;
+    border: 0.5px solid rgba(0,0,0,.07);
+    padding: 0px;
+    padding-left: 5px;
+    position: relative;
+}
+
+.leaflet-mapui-layers-block::before{
+    content: " ";
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    min-height: 10px;
+    background-color: white;
+}
+
+.leaflet-mapui-layers-block:hover::before{
+    background-color: lightslategrey;
+}
+
+.leaflet-mapui-layers-block.selected::before{
+    background-color: skyblue;
+}
+
+ul.leaflet-mapui-layers-content{
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    margin-left: 30px;
+    padding-top: 10px;
+    position: relative;
+    top:-10px;
+}
+
+ul.leaflet-mapui-layers-content li{
+    width: 90%;
+    font-size: 1.2em;
+    font-weight: 700;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    img{
+        position: relative;
+        top: 3px;
+    }
+    span{
+        position: relative;
+        top:2px
+    }
+}
+ul.leaflet-mapui-layers-content li.marker:hover{
+    background-color: bisque;
+    .markerdelete{
+        opacity: 0.5;
+    }
+}
+
+ul.leaflet-mapui-layers-content li.shape:hover{
+    background-color: cadetblue;
+    .shapedelete{
+        opacity: 0.5;
+    }
+}
+
+
+
+
+.leaflet-mapui-layers-topdiv{
+    display: flex;
+    align-items: center;  
+    height: 40px;
+    margin-top: 0px;
+    padding: 0;
+    padding-left: 10px;
+}
+
+.visibility-div{
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    margin-right: 20px;
+}
+
+.leaflet-layer-delbtn{
+    margin-left: auto;
+    margin-right: 10px;
+    border: none;
+    opacity: 0.5;
+    background-color: white;
+}
+.markerdelete,.shapedelete{
+    opacity: 0;
+}
+.markerdelete:hover{
+    background-color: bisque;
+}
+
+.shapedelete:hover{
+    background-color: cadetblue;
+}
+
+.leaflet-layer-delbtn:hover{
+    opacity: 1.0;
+}
+

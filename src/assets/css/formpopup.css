@@ -1,0 +1,158 @@
+/* form popup */
+
+.my-popup{
+    position: absolute;
+    bottom: 10px;
+}
+
+
+
+.leaflet-popup-content-wrapper{
+    width: 320px;
+    height: 177px;
+    padding: 1px 0px 0px 12px;
+    margin: 0px;
+}
+.leaflet-popup-content{
+    margin: 0px;
+    padding: 10px 0px 0px 0px;
+    margin-bottom: 10px;
+    font-size: 2em;
+    font-weight: 800;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+div.leaflet-popup-div-title{
+    position: relative;
+    top:-25px;
+    left: 5px;
+    font:bolder 1.2em Arial;
+    margin-bottom: 0px;
+    color:#b8b8b8;
+}
+
+input.leaflet-popup-div-title{
+    position: relative;
+    top:-30px;
+    left: 10px;
+    color:black;
+    border: 1px solid black;
+    width: 80%;
+    height: 25px;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+}
+
+textarea.leaflet-popup-div-description{
+    position: relative;
+    top: -25px;
+    left: 10px;
+    border: 1px solid grey;
+}
+
+div.leaflet-popup-div-description{
+    position: relative;
+    top: -10px;
+    left: 15px;
+    font: 400 italic 13px Arial;
+}
+
+
+.leaflet-popup-div-btn-grp.dispmode{
+    position: relative;
+    bottom: -80px;
+    left: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0px;
+}
+
+.leaflet-popup-div-btn-grp.editmode{
+    position: relative;
+    bottom: 20px;
+    left: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 0px;
+}
+
+.leaflet-popup-div-btn{
+    width: 70px;
+    height: 30px;
+    background: linear-gradient(#4d90fe,#4787ed);
+    border:none;
+    font-weight: 700;
+    color:aliceblue;
+}
+
+.leaflet-popup-div-btn.save-btn::before{
+    background-image: url('../ui-icons/edit-icon.png');
+}
+.leaflet-popup-div-btn:hover{
+    border: 1px solid wheat;
+    box-shadow: 1px 1px 10px slateblue;
+    color:black;
+}
+
+
+.leaflet-popup-div-latlng::before{
+    content:'';
+    background: url('../ui-icons/latlng.png'); /*url of image*/
+    height: 20px; /*height of image*/
+    width: 20px;  /*width of image*/
+    position: absolute; 
+    top: -3px;
+    left: -5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.leaflet-popup-div-latlng{
+    padding-left: 13px;
+}
+
+.leaflet-popup-edit-button{
+    position: relative;
+	top: 0;
+	right: 10px;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+}
+
+
+.leaflet-popup-form-div{
+    margin-top: -10px;
+    margin-bottom: 10px;
+    max-height: 1000px;
+    input, label {
+        display:block;
+    }
+    label{
+        text-transform: uppercase;
+        font-weight: bolder;
+    }
+    textarea{
+        resize: none;
+    }
+}
+
+.leaflet-popup-div-btn-grp.formmode{
+    position: relative;
+    bottom: 0px;
+    left: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 0px;
+}

@@ -1,0 +1,147 @@
+
+
+
+#main-page{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin: 0;
+    border-top: 1px solid black;
+}
+
+h1 {
+    padding: 20px;
+    height: 60px;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background: linear-gradient(grey,white);
+    margin: 0;
+    text-transform: capitalize;
+    text-shadow: 10px;
+}
+
+
+#new-map-button{
+    width: 100px;
+    height: 60px;
+    position: relative;
+    bottom: 0;
+    right: 0;
+}
+
+#map-list{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    padding: 50px;
+}
+
+.map-item{
+    width: 200px;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    border:2px solid black;
+}
+
+.map-item:hover{
+    transform: scale(1.1);
+    box-shadow: 10px 10px 10px grey;
+}
+
+
+.map-item .tile{
+    width: 200px;
+    height: 190px;
+    border-bottom: 1px solid grey;
+    margin-bottom: 0px;
+    background-size: cover;
+}
+
+.map-item p{
+    margin-top: 0px;
+    padding-left: 20px;
+}
+
+.map-item div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 20px;
+    margin-bottom: -10px;
+}
+
+.map-item div button{
+    margin-left: 20px;
+    border: none;
+    opacity: 0.5;
+    background-color: white;
+}
+
+.map-item div button:hover{
+    opacity: 1.0;
+}
+
+.map-item .title{
+    padding-left: 0px;
+    padding-top: 5px;
+    margin-bottom: 0px;
+    font-weight: bolder;
+    color:red;
+    font-size: 1.3em;
+    width: 150px;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.map-item .desc{
+    margin-top: 0px;
+    padding: 0px;
+    padding-left: 20px;
+    color:grey;
+    font-size: 0.9em;
+    margin-bottom: 0px;
+    width: 150px;
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.map-item .created{
+    margin-top: 0px;
+    font-size: 0.7em;
+}
+
+.stickybtn{
+    border:none;
+    border-radius: 10px;
+    background: linear-gradient(lightblue,blue);
+    width: 120px;
+    height: 60px;
+    position: fixed;
+    font-size: 1.2em;
+    bottom: 60px;
+    right: 70px;
+    box-shadow: 1px 1px 1px black;
+    display: flex;
+    flex-direction: row;
+    padding-top: 20px;
+
+}
+
+.stickybtn p{
+    font-size: 1.5em;
+    margin-top: -3px;
+    padding: 0px;
+    margin: 0px;
+    color: red;
+    margin-right: 5px;
+}
+
+
+.stickybtn:hover{
+    transform: rotate(3deg);
+    box-shadow: 10px 10px 10px black;
+}
+
