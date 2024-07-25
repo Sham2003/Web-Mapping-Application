@@ -2,6 +2,78 @@ import { Feature, Geometry ,LineString,Polygon} from 'geojson';
 import * as L from 'leaflet';
 import 'leaflet-draw'
 
+function lineStringLength(lineString: number[][]): number {
+    const earthRadius = 6371; // Earth's radius in kilometers
+    const coords = lineString;
+    let totalLength = 0;
+
+    if (coords && coords.length > 1) {
+        for (let i = 0; i < coords.length - 1; i++) {
+            totalLength += haversineDistance(coords[i], coords[i + 1], earthRadius);
+        }
+    }
+
+    return totalLength;
+}
+
+function haversineDistance(coord1: number[], coord2: number[], radius: number): number {
+    const lat1 = coord1[1] * PI_OVER_180;
+    const lat2 = coord2[1] * PI_OVER_180;
+    const dLat = (coord2[1] - coord1[1]) * PI_OVER_180;
+    const dLon = (coord2[0] - coord1[0]) * PI_OVER_180;
+
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1) * Math.cos(lat2) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return radius * c;
+}
+
+
+function polygonArea(polygon: Polygon) {
+	const coords = polygon.coordinates;
+	let total = 0;
+	if (coords && coords.length > 0) {
+		total += Math.abs(ringArea(coords[0]));
+		for (let i = 1; i < coords.length; i++) {
+			total -= Math.abs(ringArea(coords[i]));
+		}
+	}
+	return total;
+}
+const earthRadius = 6371008.8;
+const FACTOR = (earthRadius * earthRadius) / 2;
+const PI_OVER_180 = Math.PI / 180;
+
+function ringArea(coords: number[][]): number {
+	const coordsLength = coords.length;
+
+	if (coordsLength <= 2) {
+		return 0;
+	}
+
+	let total = 0;
+
+	let i = 0;
+	while (i < coordsLength) {
+		const lower = coords[i];
+		const middle = coords[i + 1 === coordsLength ? 0 : i + 1];
+		const upper =
+			coords[i + 2 >= coordsLength ? (i + 2) % coordsLength : i + 2];
+
+		const lowerX = lower[0] * PI_OVER_180;
+		const middleY = middle[1] * PI_OVER_180;
+		const upperX = upper[0] * PI_OVER_180;
+
+		total += (upperX - lowerX) * Math.sin(middleY);
+
+		i++;
+	}
+
+	return total * FACTOR;
+}
 
 export interface EditablePopupDataEvent extends L.LeafletEvent {
     latlng: L.LatLng;
@@ -206,12 +278,12 @@ class EditablePopup extends L.Popup{
 			this._popupInfo.textContent = `${latlang?.lat.toFixed(4)},${latlang?.lng.toFixed(4)}`;
 		}else if(this._featuredata.geometry.type == 'LineString'){
 			this._popupInfo = L.DomUtil.create('div',`${prefix}-div-perimeter`,this._buttonGrp);
-			const perimeter = calcPerimeter(this._featuredata.geometry);
-			this._popupInfo.textContent = `Perimeter = ${perimeter} Km`;
+			const perimeter = lineStringLength(this._featuredata.geometry.coordinates);
+			this._popupInfo.textContent = `Perimeter = ${perimeter.toFixed(1)} Km`;
 		}else if(this._featuredata.geometry.type == 'Polygon'){
 			this._popupInfo = L.DomUtil.create('div',`${prefix}-div-area`,this._buttonGrp);
-			const area =  calcArea(this._featuredata.geometry);
-			this._popupInfo.textContent = `Area = ${area} Km2`;
+			const area =  polygonArea(this._featuredata.geometry)/(1000*1000);
+			this._popupInfo.textContent = `Area = ${area.toFixed(2)} Km2`;
 		}else{
 
 		}

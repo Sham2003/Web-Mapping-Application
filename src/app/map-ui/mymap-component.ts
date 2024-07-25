@@ -53,18 +53,10 @@ const defaultTileLayer:{url:string,options:L.TileLayerOptions} = {
         minZoom:1,
         attribution: '© OpenStreetMap',
         noWrap:true,
-        //id:'mapbox/streets-v12'
+        id:'mapbox/streets-v12'
     }
 }
-const myTileLayer:{url:string,options:L.TileLayerOptions} = {
-    url:'http://localhost:3650/api/maps/satellite-hybrid/256/{z}/{x}/{y}.jpg',
-    options:{
-        maxZoom: 22,
-        minZoom: 1,
-        attribution:'© MapTiler - OpenStreetMap',
-        noWrap:true
-    }
-}
+
 
 
 type UpdatePayload = string;
@@ -98,7 +90,6 @@ export class MyMap{
         
         this.baselayer = L.tileLayer(defaultTileLayer.url, defaultTileLayer.options);
         
-        //this.baselayer = L.tileLayer(myTileLayer.url, myTileLayer.options);
         
         this.map = L.map(this._element,{
 			center:[14.5024,77.2031],
