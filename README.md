@@ -39,14 +39,12 @@ To set up the project locally, follow these steps:
 2. **Install dependencies:**
 
     ```bash
-    Copy code
     npm install
 
 
 3. **Run the application:**
 
     ```bash
-    Copy code
     ng serve
 
 
