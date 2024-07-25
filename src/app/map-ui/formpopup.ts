@@ -73,7 +73,13 @@ export class FormPopup extends L.Popup {
         const prefix = 'leaflet-popup';
         const container = this._container = L.DomUtil.create('div', `${prefix} .leaflet-form-popup leaflet-zoom-animated`);
         
-        const wrapper = this._wrapper = L.DomUtil.create('div', `${prefix}-content-wrapper`, container);
+        var className = '';
+        if(this.title == 'Edit Map Info'){
+          className = 'map-content';
+        }else{
+          className = 'layer-content';
+        }
+        const wrapper = this._wrapper = L.DomUtil.create('div', `${prefix}-content-wrapper ${className}`, container);
         this._contentNode = L.DomUtil.create('div', `${prefix}-content`, wrapper);
         this._contentNode.textContent = this.title;
         L.DomEvent.disableClickPropagation(container);

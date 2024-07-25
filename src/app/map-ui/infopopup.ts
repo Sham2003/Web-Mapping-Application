@@ -1,11 +1,49 @@
-import { Feature, Geometry } from 'geojson';
+import { Feature, Geometry ,LineString,Polygon} from 'geojson';
 import * as L from 'leaflet';
+import 'leaflet-draw'
+
+
 export interface EditablePopupDataEvent extends L.LeafletEvent {
     latlng: L.LatLng;
 	title:string;
 	description:string;
 	mid:string;
 	eltype:'marker'|'shape';
+}
+
+function calcArea(g:Polygon) {
+	var latLngs = g.coordinates[0].map((p) => L.latLng(p[0],p[1]))
+	var pointsCount = latLngs.length,
+		area = 0.0,
+		d2r = Math.PI / 180,
+		p1, p2;
+
+	if (pointsCount > 2) {
+		for (var i = 0; i < pointsCount; i++) {
+			p1 = latLngs[i];
+			p2 = latLngs[(i + 1) % pointsCount];
+			area += ((p2.lng - p1.lng) * d2r) *
+				(2 + Math.sin(p1.lat * d2r) + Math.sin(p2.lat * d2r));
+		}
+		area = area * 6378137.0 * 6378137.0 / 2.0;
+	}
+
+	area /= 1000*1000;
+	area = Math.abs(area);
+	return area.toFixed(2);;
+}
+
+function calcPerimeter(g:LineString){
+	var length = 0; 
+	var coords = g.coordinates;
+	var n = g.coordinates.length - 1;
+	for(let i=0;i<n;i++){
+		var coord1 = L.latLng(coords[i][0],coords[i][1]);
+		var coord2 = L.latLng(coords[i+1][0],coords[i+1][1]);
+		length += coord1.distanceTo(coord2);
+	}
+	length /= 1000;
+	return length.toFixed(1);
 }
 
 
@@ -89,12 +127,13 @@ class EditablePopup extends L.Popup{
 	_titleNode!: HTMLDivElement | HTMLInputElement;
 	_descNode!: HTMLDivElement | HTMLTextAreaElement;
 	_buttonGrp!: HTMLDivElement;
-	_latlangInfo!: HTMLDivElement;
+	_popupInfo!: HTMLDivElement;
 	_editBtn!: HTMLAnchorElement;
 	_saveBtn!: HTMLButtonElement;
 	_cancelBtn!: HTMLButtonElement;
 	_id: string;
 	eltype: string;
+	private _featuredata: Feature<Geometry, any>;
 	
 	constructor(feature:Feature<Geometry, any>){
 		super();
@@ -102,6 +141,7 @@ class EditablePopup extends L.Popup{
 		this.eltype = feature.properties['mode'] == 'point'?'marker':'shape';
 		this._titleContent = feature.properties['title'] as string;
 		this._description = feature.properties['description'] as string;
+		this._featuredata = feature;
 	}
 	
 	callDataListener(data:{mid:string,eltype:string,title:string,description:string}){
@@ -159,9 +199,23 @@ class EditablePopup extends L.Popup{
 
 		this._buttonGrp = L.DomUtil.create('div',`${prefix}-div-btn-grp dispmode`,this._wrapper);
 		
-		this._latlangInfo = L.DomUtil.create('div',`${prefix}-div-latlng`,this._buttonGrp);
-		const latlang = L.Popup.prototype.getLatLng.call(this);
-		this._latlangInfo.textContent = `${latlang?.lat.toFixed(4)},${latlang?.lng.toFixed(4)}`;
+		if(this._featuredata.geometry.type == "Point")
+		{
+			this._popupInfo = L.DomUtil.create('div',`${prefix}-div-latlng`,this._buttonGrp);
+			const latlang = L.Popup.prototype.getLatLng.call(this);
+			this._popupInfo.textContent = `${latlang?.lat.toFixed(4)},${latlang?.lng.toFixed(4)}`;
+		}else if(this._featuredata.geometry.type == 'LineString'){
+			this._popupInfo = L.DomUtil.create('div',`${prefix}-div-perimeter`,this._buttonGrp);
+			const perimeter = calcPerimeter(this._featuredata.geometry);
+			this._popupInfo.textContent = `Perimeter = ${perimeter} Km`;
+		}else if(this._featuredata.geometry.type == 'Polygon'){
+			this._popupInfo = L.DomUtil.create('div',`${prefix}-div-area`,this._buttonGrp);
+			const area =  calcArea(this._featuredata.geometry);
+			this._popupInfo.textContent = `Area = ${area} Km2`;
+		}else{
+
+		}
+		
 
 		this._editBtn = L.DomUtil.create('a', `${prefix}-edit-button`, this._buttonGrp);
 		this._editBtn.setAttribute('role', 'button');
@@ -189,7 +243,7 @@ class EditablePopup extends L.Popup{
 		this._descNode.cols = 37;
 		this._descNode.style.resize = 'none';
 		this._descNode.value = this.getDescContent();
-		this._buttonGrp.removeChild(this._latlangInfo);
+		this._buttonGrp.removeChild(this._popupInfo);
 		this._buttonGrp.removeChild(this._editBtn);
 		this._wrapper.removeChild(this._buttonGrp);
 

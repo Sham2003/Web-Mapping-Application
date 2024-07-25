@@ -31,13 +31,14 @@ const hoverStyle:L.PathOptions = {
 const defaultlineStyle:L.PathOptions = {
     stroke:true,
     color:'orange',
+    weight:5,
     opacity:1,
     dashArray:[3,3,3],
     fill:false
 }
 const hoverlineStyle:L.PathOptions = {
     stroke:true,
-    weight:2,
+    weight:10,
     color:'white',
     opacity:1,
     dashOffset:'2',
