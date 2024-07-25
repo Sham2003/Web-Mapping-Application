@@ -96,9 +96,9 @@ export class MyMap{
         if(router)
             this.router = router;
         
-        //this.baselayer = L.tileLayer(defaultTileLayer.url, defaultTileLayer.options);
+        this.baselayer = L.tileLayer(defaultTileLayer.url, defaultTileLayer.options);
         
-        this.baselayer = L.tileLayer(myTileLayer.url, myTileLayer.options);
+        //this.baselayer = L.tileLayer(myTileLayer.url, myTileLayer.options);
         
         this.map = L.map(this._element,{
 			center:[14.5024,77.2031],
