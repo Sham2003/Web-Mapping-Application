@@ -6,8 +6,11 @@ import { DrawControl } from "./draw-control";
 import { MapTypes } from "../map-service/map-types";
 import { TerraDrawBaseDrawMode } from "terra-draw/dist/modes/base.mode";
 import 'leaflet-draw';
+
+
 type DrawModes = 'circle'|'freehand'|'linestring'|'point'|'polygon'|'rectangle'|'select'|''|'mypolygon';
 type UIDrawMode = {name:DrawModes,mode:TerraDrawBaseDrawMode<any>}
+
 
 export class DrawMapUI{
     private drawctx!:TerraDraw;
@@ -66,7 +69,7 @@ export class DrawMapUI{
             console.log("Selected SHape=> ",id);
         });
 
-        this.drawui = DrawControl.drawcontrolui(this.drawctx,modenames,{position:'topleft'});
+        this.drawui = DrawControl.drawcontrolui(modenames,{position:'topleft'});
         this.drawui.addTo(this._map);
     }
 

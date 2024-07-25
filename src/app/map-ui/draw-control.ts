@@ -1,5 +1,4 @@
 import * as L from 'leaflet';
-import { TerraDraw} from 'terra-draw';
 
 
 
@@ -8,14 +7,12 @@ export namespace DrawControl{
 	export class DrawControlUI extends L.Control{
 		_map!: L.Map;
 		_container!: HTMLElement;
-		draw!: TerraDraw;
 		buttons:HTMLButtonElement[] = [];
 		selectedMode!:DrawModes;
 
 		drawingmodes:DrawModes[];
-		constructor(drawctx:TerraDraw,modes:DrawModes[],options?:L.ControlOptions){
+		constructor(modes:DrawModes[],options?:L.ControlOptions){
 			super(options);
-			this.draw = drawctx;
 			this.drawingmodes = modes;
 		}
 
@@ -79,8 +76,8 @@ export namespace DrawControl{
 
 
 
-	export const drawcontrolui = function(drawctx:TerraDraw,modes:DrawModes[],options?:L.ControlOptions){
-		return new DrawControlUI(drawctx,modes,options);
+	export const drawcontrolui = function(modes:DrawModes[],options?:L.ControlOptions){
+		return new DrawControlUI(modes,options);
 	}
 };
 
