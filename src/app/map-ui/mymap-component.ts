@@ -214,7 +214,6 @@ export class MyMap{
                 },
                 onEachFeature(feature, layer) {
                     if(selectedMode == ''){
-                        console.log("Layer for feature = ",feature.geometry.type);
                         layer.bindPopup(editablePopup(feature))
                         if(feature.geometry.type != 'Point'){
                             layer.on({
@@ -335,13 +334,10 @@ export class MyMap{
 
         this.map.on('refresh-layer',(event:any)=>{
             this.refreshLayers();
-            console.log('Layer Objects count => ',this.mylayers.length);
-            console.log(this.mylayers);
         });
 
         this.map.on('clear-layers',(event:any)=>{
             this.clearLayers();
-            console.log(this.mylayers);
         });
 
         this.map.on('create-layer',(event)=>{

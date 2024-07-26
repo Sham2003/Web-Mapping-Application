@@ -4,6 +4,9 @@ import * as L from 'leaflet';
 
 export namespace DrawControl{
 	export type DrawModes = 'circle'|'freehand'|'linestring'|'point'|'polygon'|'rectangle'|'select'|''|'mypolygon';
+
+	const SKIPBUTTONS:DrawModes[] = ['freehand','circle','rectangle'];
+
 	export class DrawControlUI extends L.Control{
 		_map!: L.Map;
 		_container!: HTMLElement;
@@ -38,7 +41,7 @@ export namespace DrawControl{
 			L.DomEvent.on(parent,'mousewheel',L.DomEvent.stopPropagation);
 
 			for(const modename of this.drawingmodes){
-				if(modename != 'polygon'){
+				if(!SKIPBUTTONS.includes(modename)){
 					const aLabel = modename != 'select' ? `Add a ${modename}`:'Select a shape';
 					const drawButton = DrawControlUI.createAriaImageButton(className,parent,aLabel,`${modename}.png`);
 					drawButton.name = modename;

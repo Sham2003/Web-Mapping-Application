@@ -303,7 +303,7 @@ export class MapItem{
 	  return popups;
 	}
 
-	getMapData(){
+	getMapData():MapTypes.MapLayerObject[]{
 		const layers =[];
 		for(var layer of this.layers){
 			const layerData = {
@@ -311,7 +311,8 @@ export class MapItem{
 				name:layer.layername,
 				markers:layer.markers,
 				shapes:layer.shapes,
-				visible:layer.visible
+				visible:layer.visible,
+				selected:layer.selected
 			}
 			layers.push(layerData);
 		}

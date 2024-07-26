@@ -16,7 +16,7 @@ export class DrawMapUI{
     private drawctx!:TerraDraw;
     private drawui!: DrawControl.DrawControlUI;
     private _map:L.Map;
-    private data:any[] = [];
+    private data:MapTypes.MapLayerObject[] = [];
     drawingmodes!: UIDrawMode[];
     currentDrawMode: DrawModes;
     private leafletdraw!:L.Control;
@@ -107,62 +107,7 @@ export class DrawMapUI{
             edit: false
         };
 
-        // options: {
-        //     allowIntersection: true,
-        //     repeatMode: false,
-        //     drawError: {
-        //         color: '#b00b00',
-        //         timeout: 2500
-        //     },
-        //     icon: new L.DivIcon({
-        //         iconSize: new L.Point(8, 8),
-        //         className: 'leaflet-div-icon leaflet-editing-icon'
-        //     }),
-        //     touchIcon: new L.DivIcon({
-        //         iconSize: new L.Point(20, 20),
-        //         className: 'leaflet-div-icon leaflet-editing-icon leaflet-touch-icon'
-        //     }),
-        //     guidelineDistance: 20,
-        //     maxGuideLineLength: 4000,
-        //     shapeOptions: {
-        //         stroke: true,
-        //         color: '#3388ff',
-        //         weight: 4,
-        //         opacity: 0.5,
-        //         fill: false,
-        //         clickable: true
-        //     },
-        //     metric: true, // Whether to use the metric measurement system or imperial
-        //     feet: true, // When not metric, to use feet instead of yards for display.
-        //     nautic: false, // When not metric, not feet use nautic mile for display
-        //     showLength: true, // Whether to display distance in the tooltip
-        //     zIndexOffset: 2000, // This should be > than the highest z-index any map layers
-        //     factor: 1, // To change distance calculation
-        //     maxPoints: 0 // Once this number of points are placed, finish shape
-        // }
-
-        // options: {
-        //     showArea: false,
-        //     showLength: false,
-        //     shapeOptions: {
-        //         stroke: true,
-        //         color: '#3388ff',
-        //         weight: 4,
-        //         opacity: 0.5,
-        //         fill: true,
-        //         fillColor: null, //same as color by default
-        //         fillOpacity: 0.2,
-        //         clickable: true
-        //     },
-        //     // Whether to use the metric measurement system (truthy) or not (falsy).
-        //     // Also defines the units to use for the metric system as an array of
-        //     // strings (e.g. `['ha', 'm']`).
-        //     metric: true,
-        //     feet: true, // When not metric, to use feet instead of yards for display.
-        //     nautic: false, // When not metric, not feet use nautic mile for display
-        //     // Defines the precision for each type of unit (e.g. {km: 2, ft: 0}
-        //     precision: {}
-        // }
+       
         
         //@ts-ignore
         this.leafletdraw = new L.Control.Draw(options);
@@ -266,14 +211,40 @@ export class DrawMapUI{
         //this.clearLayers();
         this._map.fire('clear-layers');
         this._map.fire('get-editable-data');
-        //console.log(this.data);
-        //console.log("Cleared Layers");
         this.drawctx.start();
         this.drawctx.clear();
         for(const ld of this.getEditableData()){
             if(ld.visible){
-                this.drawctx.addFeatures(ld.shapes);
-                this.drawctx.addFeatures(ld.markers);
+                console.log('--------------------------------------------------------------------------------');
+                console.log('                       Layer id => ',ld.id);
+                for(var m of ld.markers){
+                    try {
+                        this.drawctx.addFeatures([m]);
+                        console.log('Marker with id ',m.id, ' added');
+                    } catch (error) {
+                        console.log("Markers validation failed => ",m.id,m.properties['mode']);
+                    }
+                }
+                for(var s of ld.shapes){
+                    try {
+                        this.drawctx.addFeatures([s]);
+                        console.log('Shape with id ',s.id, ' added');
+                    } catch (error) {
+                        console.log("Shape Validation Failed => ,",s.id,s.properties['mode']);
+                        console.log(s);
+                        console.log(error);
+                        const checkmode = this.drawingmodes.find((v) => v.name == s.properties['mode'] as string)?.mode;
+                        if(checkmode){
+                            console.log("Validation Output => ",checkmode.validateFeature(s));
+                        }else{
+                            console.log("Mode itself is not there");
+                        }
+                    }
+                }
+                console.log('--------------------------------------------------------------------------------');
+  
+                // this.drawctx.addFeatures(ld.shapes);
+                // this.drawctx.addFeatures(ld.markers);
             }
         }
         // console.log('features saved');
@@ -285,7 +256,7 @@ export class DrawMapUI{
         return this.data;
     }
 
-    setEditableData(d: any){
+    setEditableData(d: MapTypes.MapLayerObject[]){
         this.data = d;
     }
 
@@ -387,50 +358,109 @@ export class DrawMapUI{
 				}
 			})
 		},
-		// {
-		// 	name:'rectangle',
-		// 	mode:new TerraDrawRectangleMode({
-		// 		validation:(feature, { updateType }) => {
-		// 			if (updateType === "finish" || updateType === "commit") {
-		// 			    return ValidateMinAreaSquareMeters(feature,0.1);
-		// 			}
-		// 			return true
-		// 		}
-		// 	})
-		// },
-		// {
-		// 	name:'circle',
-		// 	mode:new TerraDrawCircleMode({
-		// 		startingRadiusKilometers:0.1,
-		// 		validation:(feature, { updateType }) => {
-		// 			if (updateType === "finish" || updateType === "commit") {
-		// 			    return ValidateMinAreaSquareMeters(feature,0.1);
-		// 			}
-		// 			return true
-		// 		}
-		// 	})
-		// },
+		{
+			name:'rectangle',
+			mode:new TerraDrawRectangleMode({
+				validation:(feature, { updateType }) => {
+					if (updateType === "finish" || updateType === "commit") {
+					    return ValidateMinAreaSquareMeters(feature,0.1);
+					}
+					return true
+				}
+			})
+		},
+		{
+			name:'circle',
+			mode:new TerraDrawCircleMode({
+				startingRadiusKilometers:0.1,
+				validation:(feature, { updateType }) => {
+					if (updateType === "finish" || updateType === "commit") {
+					    return ValidateMinAreaSquareMeters(feature,0.1);
+					}
+					return true
+				}
+			})
+		},
 		{
 			name:'polygon',
 			mode:new TerraDrawPolygonMode({
 				//snapping: true,
 				pointerDistance: 30,
 				validation: (feature, { updateType }) => {
-				if (updateType === "finish" || updateType === "commit") {
-					return ValidateNotSelfIntersecting(feature);
-				}
-				return true
+                    if (updateType === "finish" || updateType === "commit") {
+                        const res = ValidateNotSelfIntersecting(feature);
+                        return res;
+                    }
+                    return true
 				}
 			})
 		},
-		// {
-		// 	name:'freehand',
-		// 	mode:new TerraDrawFreehandMode({
-		// 		validation: (feature) => {
-		// 		return ValidateNotSelfIntersecting(feature);
-		// 		}
-		// 	})
-		// }
+		{
+			name:'freehand',
+			mode:new TerraDrawFreehandMode({
+				validation: (feature) => {
+				return ValidateNotSelfIntersecting(feature);
+				}
+			})
+		}
 	]
     }
 }
+
+
+ // options: {
+        //     allowIntersection: true,
+        //     repeatMode: false,
+        //     drawError: {
+        //         color: '#b00b00',
+        //         timeout: 2500
+        //     },
+        //     icon: new L.DivIcon({
+        //         iconSize: new L.Point(8, 8),
+        //         className: 'leaflet-div-icon leaflet-editing-icon'
+        //     }),
+        //     touchIcon: new L.DivIcon({
+        //         iconSize: new L.Point(20, 20),
+        //         className: 'leaflet-div-icon leaflet-editing-icon leaflet-touch-icon'
+        //     }),
+        //     guidelineDistance: 20,
+        //     maxGuideLineLength: 4000,
+        //     shapeOptions: {
+        //         stroke: true,
+        //         color: '#3388ff',
+        //         weight: 4,
+        //         opacity: 0.5,
+        //         fill: false,
+        //         clickable: true
+        //     },
+        //     metric: true, // Whether to use the metric measurement system or imperial
+        //     feet: true, // When not metric, to use feet instead of yards for display.
+        //     nautic: false, // When not metric, not feet use nautic mile for display
+        //     showLength: true, // Whether to display distance in the tooltip
+        //     zIndexOffset: 2000, // This should be > than the highest z-index any map layers
+        //     factor: 1, // To change distance calculation
+        //     maxPoints: 0 // Once this number of points are placed, finish shape
+        // }
+
+        // options: {
+        //     showArea: false,
+        //     showLength: false,
+        //     shapeOptions: {
+        //         stroke: true,
+        //         color: '#3388ff',
+        //         weight: 4,
+        //         opacity: 0.5,
+        //         fill: true,
+        //         fillColor: null, //same as color by default
+        //         fillOpacity: 0.2,
+        //         clickable: true
+        //     },
+        //     // Whether to use the metric measurement system (truthy) or not (falsy).
+        //     // Also defines the units to use for the metric system as an array of
+        //     // strings (e.g. `['ha', 'm']`).
+        //     metric: true,
+        //     feet: true, // When not metric, to use feet instead of yards for display.
+        //     nautic: false, // When not metric, not feet use nautic mile for display
+        //     // Defines the precision for each type of unit (e.g. {km: 2, ft: 0}
+        //     precision: {}
+        // }
